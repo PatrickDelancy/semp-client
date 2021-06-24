@@ -6,13 +6,15 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // MsgVpnDistributedCacheCluster msg vpn distributed cache cluster
+//
 // swagger:model MsgVpnDistributedCacheCluster
 type MsgVpnDistributedCacheCluster struct {
 
@@ -70,7 +72,7 @@ type MsgVpnDistributedCacheCluster struct {
 	// The maximum number of topics for each Cache Instance in the Cache Cluster. The default value is `2000000`.
 	MaxTopicCount int64 `json:"maxTopicCount,omitempty"`
 
-	// The message lifetime, in seconds. If a message remains cached for the duration of its lifetime, the Cache Instance will remove the message. A lifetime of 0 results in the message being retained indefinitely. The default is to have no `msgLifetime`.
+	// The message lifetime, in seconds. If a message remains cached for the duration of its lifetime, the Cache Instance will remove the message. A lifetime of 0 results in the message being retained indefinitely. The default value is `0`.
 	MsgLifetime int64 `json:"msgLifetime,omitempty"`
 
 	// The name of the Message VPN.
@@ -119,7 +121,6 @@ func (m *MsgVpnDistributedCacheCluster) Validate(formats strfmt.Registry) error 
 }
 
 func (m *MsgVpnDistributedCacheCluster) validateEventDataByteRateThreshold(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.EventDataByteRateThreshold) { // not required
 		return nil
 	}
@@ -137,7 +138,6 @@ func (m *MsgVpnDistributedCacheCluster) validateEventDataByteRateThreshold(forma
 }
 
 func (m *MsgVpnDistributedCacheCluster) validateEventDataMsgRateThreshold(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.EventDataMsgRateThreshold) { // not required
 		return nil
 	}
@@ -155,7 +155,6 @@ func (m *MsgVpnDistributedCacheCluster) validateEventDataMsgRateThreshold(format
 }
 
 func (m *MsgVpnDistributedCacheCluster) validateEventMaxMemoryThreshold(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.EventMaxMemoryThreshold) { // not required
 		return nil
 	}
@@ -173,7 +172,6 @@ func (m *MsgVpnDistributedCacheCluster) validateEventMaxMemoryThreshold(formats 
 }
 
 func (m *MsgVpnDistributedCacheCluster) validateEventMaxTopicsThreshold(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.EventMaxTopicsThreshold) { // not required
 		return nil
 	}
@@ -191,7 +189,6 @@ func (m *MsgVpnDistributedCacheCluster) validateEventMaxTopicsThreshold(formats 
 }
 
 func (m *MsgVpnDistributedCacheCluster) validateEventRequestQueueDepthThreshold(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.EventRequestQueueDepthThreshold) { // not required
 		return nil
 	}
@@ -209,7 +206,6 @@ func (m *MsgVpnDistributedCacheCluster) validateEventRequestQueueDepthThreshold(
 }
 
 func (m *MsgVpnDistributedCacheCluster) validateEventRequestRateThreshold(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.EventRequestRateThreshold) { // not required
 		return nil
 	}
@@ -227,13 +223,148 @@ func (m *MsgVpnDistributedCacheCluster) validateEventRequestRateThreshold(format
 }
 
 func (m *MsgVpnDistributedCacheCluster) validateEventResponseRateThreshold(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.EventResponseRateThreshold) { // not required
 		return nil
 	}
 
 	if m.EventResponseRateThreshold != nil {
 		if err := m.EventResponseRateThreshold.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("eventResponseRateThreshold")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this msg vpn distributed cache cluster based on the context it is used
+func (m *MsgVpnDistributedCacheCluster) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateEventDataByteRateThreshold(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateEventDataMsgRateThreshold(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateEventMaxMemoryThreshold(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateEventMaxTopicsThreshold(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateEventRequestQueueDepthThreshold(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateEventRequestRateThreshold(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateEventResponseRateThreshold(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *MsgVpnDistributedCacheCluster) contextValidateEventDataByteRateThreshold(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.EventDataByteRateThreshold != nil {
+		if err := m.EventDataByteRateThreshold.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("eventDataByteRateThreshold")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *MsgVpnDistributedCacheCluster) contextValidateEventDataMsgRateThreshold(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.EventDataMsgRateThreshold != nil {
+		if err := m.EventDataMsgRateThreshold.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("eventDataMsgRateThreshold")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *MsgVpnDistributedCacheCluster) contextValidateEventMaxMemoryThreshold(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.EventMaxMemoryThreshold != nil {
+		if err := m.EventMaxMemoryThreshold.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("eventMaxMemoryThreshold")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *MsgVpnDistributedCacheCluster) contextValidateEventMaxTopicsThreshold(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.EventMaxTopicsThreshold != nil {
+		if err := m.EventMaxTopicsThreshold.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("eventMaxTopicsThreshold")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *MsgVpnDistributedCacheCluster) contextValidateEventRequestQueueDepthThreshold(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.EventRequestQueueDepthThreshold != nil {
+		if err := m.EventRequestQueueDepthThreshold.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("eventRequestQueueDepthThreshold")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *MsgVpnDistributedCacheCluster) contextValidateEventRequestRateThreshold(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.EventRequestRateThreshold != nil {
+		if err := m.EventRequestRateThreshold.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("eventRequestRateThreshold")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *MsgVpnDistributedCacheCluster) contextValidateEventResponseRateThreshold(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.EventResponseRateThreshold != nil {
+		if err := m.EventResponseRateThreshold.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("eventResponseRateThreshold")
 			}

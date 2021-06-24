@@ -6,12 +6,14 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // MsgVpnJndiTopic msg vpn jndi topic
+//
 // swagger:model MsgVpnJndiTopic
 type MsgVpnJndiTopic struct {
 
@@ -27,6 +29,11 @@ type MsgVpnJndiTopic struct {
 
 // Validate validates this msg vpn jndi topic
 func (m *MsgVpnJndiTopic) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this msg vpn jndi topic based on context it is used
+func (m *MsgVpnJndiTopic) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

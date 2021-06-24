@@ -6,14 +6,16 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
 // MsgVpnBridgeRemoteMsgVpnResponse msg vpn bridge remote msg vpn response
+//
 // swagger:model MsgVpnBridgeRemoteMsgVpnResponse
 type MsgVpnBridgeRemoteMsgVpnResponse struct {
 
@@ -51,7 +53,6 @@ func (m *MsgVpnBridgeRemoteMsgVpnResponse) Validate(formats strfmt.Registry) err
 }
 
 func (m *MsgVpnBridgeRemoteMsgVpnResponse) validateData(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Data) { // not required
 		return nil
 	}
@@ -69,7 +70,6 @@ func (m *MsgVpnBridgeRemoteMsgVpnResponse) validateData(formats strfmt.Registry)
 }
 
 func (m *MsgVpnBridgeRemoteMsgVpnResponse) validateLinks(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Links) { // not required
 		return nil
 	}
@@ -94,6 +94,70 @@ func (m *MsgVpnBridgeRemoteMsgVpnResponse) validateMeta(formats strfmt.Registry)
 
 	if m.Meta != nil {
 		if err := m.Meta.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("meta")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+// ContextValidate validate this msg vpn bridge remote msg vpn response based on the context it is used
+func (m *MsgVpnBridgeRemoteMsgVpnResponse) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateData(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateLinks(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateMeta(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *MsgVpnBridgeRemoteMsgVpnResponse) contextValidateData(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Data != nil {
+		if err := m.Data.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("data")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *MsgVpnBridgeRemoteMsgVpnResponse) contextValidateLinks(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Links != nil {
+		if err := m.Links.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("links")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *MsgVpnBridgeRemoteMsgVpnResponse) contextValidateMeta(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Meta != nil {
+		if err := m.Meta.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("meta")
 			}

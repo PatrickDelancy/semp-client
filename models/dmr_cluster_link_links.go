@@ -6,19 +6,21 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // DmrClusterLinkLinks dmr cluster link links
+//
 // swagger:model DmrClusterLinkLinks
 type DmrClusterLinkLinks struct {
 
 	// The URI of this Link's collection of Remote Address objects.
 	RemoteAddressesURI string `json:"remoteAddressesUri,omitempty"`
 
-	// The URI of this Link's collection of Trusted Common Name objects.
+	// The URI of this Link's collection of Trusted Common Name objects. Deprecated since 2.18. Common Name validation has been replaced by Server Certificate Name validation.
 	TLSTrustedCommonNamesURI string `json:"tlsTrustedCommonNamesUri,omitempty"`
 
 	// The URI of this Link object.
@@ -27,6 +29,11 @@ type DmrClusterLinkLinks struct {
 
 // Validate validates this dmr cluster link links
 func (m *DmrClusterLinkLinks) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this dmr cluster link links based on context it is used
+func (m *DmrClusterLinkLinks) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

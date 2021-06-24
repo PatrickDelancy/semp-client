@@ -6,12 +6,14 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // MsgVpnMqttRetainCache msg vpn mqtt retain cache
+//
 // swagger:model MsgVpnMqttRetainCache
 type MsgVpnMqttRetainCache struct {
 
@@ -30,6 +32,11 @@ type MsgVpnMqttRetainCache struct {
 
 // Validate validates this msg vpn mqtt retain cache
 func (m *MsgVpnMqttRetainCache) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this msg vpn mqtt retain cache based on context it is used
+func (m *MsgVpnMqttRetainCache) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

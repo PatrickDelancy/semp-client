@@ -6,12 +6,14 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // MsgVpnRestDeliveryPointQueueBinding msg vpn rest delivery point queue binding
+//
 // swagger:model MsgVpnRestDeliveryPointQueueBinding
 type MsgVpnRestDeliveryPointQueueBinding struct {
 
@@ -21,7 +23,7 @@ type MsgVpnRestDeliveryPointQueueBinding struct {
 	// The name of the Message VPN.
 	MsgVpnName string `json:"msgVpnName,omitempty"`
 
-	// The POST request-target string to use when sending requests. It identifies the target resource on the far-end REST Consumer upon which to apply the POST request. There are generally two common forms for the request-target. The origin-form is most often used in practice and contains the path and query components of the target URI. If the path component is empty then the client must generally send a "/" as the path. When making a request to a proxy, most often the absolute-form is required. This configuration is only applicable when the Message VPN is in REST messaging mode. The default value is `""`.
+	// The request-target string to use when sending requests. It identifies the target resource on the far-end REST Consumer upon which to apply the request. There are generally two common forms for the request-target. The origin-form is most often used in practice and contains the path and query components of the target URI. If the path component is empty then the client must generally send a "/" as the path. When making a request to a proxy, most often the absolute-form is required. This configuration is only applicable when the Message VPN is in REST messaging mode. The default value is `""`.
 	PostRequestTarget string `json:"postRequestTarget,omitempty"`
 
 	// The name of a queue in the Message VPN.
@@ -33,6 +35,11 @@ type MsgVpnRestDeliveryPointQueueBinding struct {
 
 // Validate validates this msg vpn rest delivery point queue binding
 func (m *MsgVpnRestDeliveryPointQueueBinding) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this msg vpn rest delivery point queue binding based on context it is used
+func (m *MsgVpnRestDeliveryPointQueueBinding) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

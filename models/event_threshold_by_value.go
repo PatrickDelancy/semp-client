@@ -6,12 +6,14 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // EventThresholdByValue event threshold by value
+//
 // swagger:model EventThresholdByValue
 type EventThresholdByValue struct {
 
@@ -24,6 +26,11 @@ type EventThresholdByValue struct {
 
 // Validate validates this event threshold by value
 func (m *EventThresholdByValue) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this event threshold by value based on context it is used
+func (m *EventThresholdByValue) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

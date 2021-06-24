@@ -6,12 +6,14 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // MsgVpnQueueSubscription msg vpn queue subscription
+//
 // swagger:model MsgVpnQueueSubscription
 type MsgVpnQueueSubscription struct {
 
@@ -27,6 +29,11 @@ type MsgVpnQueueSubscription struct {
 
 // Validate validates this msg vpn queue subscription
 func (m *MsgVpnQueueSubscription) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this msg vpn queue subscription based on context it is used
+func (m *MsgVpnQueueSubscription) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

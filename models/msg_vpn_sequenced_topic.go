@@ -6,12 +6,14 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // MsgVpnSequencedTopic msg vpn sequenced topic
+//
 // swagger:model MsgVpnSequencedTopic
 type MsgVpnSequencedTopic struct {
 
@@ -24,6 +26,11 @@ type MsgVpnSequencedTopic struct {
 
 // Validate validates this msg vpn sequenced topic
 func (m *MsgVpnSequencedTopic) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this msg vpn sequenced topic based on context it is used
+func (m *MsgVpnSequencedTopic) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

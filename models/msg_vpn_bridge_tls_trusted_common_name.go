@@ -6,20 +6,21 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
 // MsgVpnBridgeTLSTrustedCommonName msg vpn bridge Tls trusted common name
+//
 // swagger:model MsgVpnBridgeTlsTrustedCommonName
 type MsgVpnBridgeTLSTrustedCommonName struct {
 
-	// The name of the Bridge.
+	// The name of the Bridge. Deprecated since 2.18. Common Name validation has been replaced by Server Certificate Name validation.
 	BridgeName string `json:"bridgeName,omitempty"`
 
 	// The virtual router of the Bridge. The allowed values and their meaning are:
@@ -27,16 +28,16 @@ type MsgVpnBridgeTLSTrustedCommonName struct {
 	// <pre>
 	// "primary" - The Bridge is used for the primary virtual router.
 	// "backup" - The Bridge is used for the backup virtual router.
-	// "auto" - The Bridge is automatically assigned a router.
+	// "auto" - The Bridge is automatically assigned a virtual router at creation, depending on the broker's active-standby role.
 	// </pre>
-	//
+	//  Deprecated since 2.18. Common Name validation has been replaced by Server Certificate Name validation.
 	// Enum: [primary backup auto]
 	BridgeVirtualRouter string `json:"bridgeVirtualRouter,omitempty"`
 
-	// The name of the Message VPN.
+	// The name of the Message VPN. Deprecated since 2.18. Common Name validation has been replaced by Server Certificate Name validation.
 	MsgVpnName string `json:"msgVpnName,omitempty"`
 
-	// The expected trusted common name of the remote certificate.
+	// The expected trusted common name of the remote certificate. Deprecated since 2.18. Common Name validation has been replaced by Server Certificate Name validation.
 	TLSTrustedCommonName string `json:"tlsTrustedCommonName,omitempty"`
 }
 
@@ -80,14 +81,13 @@ const (
 
 // prop value enum
 func (m *MsgVpnBridgeTLSTrustedCommonName) validateBridgeVirtualRouterEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, msgVpnBridgeTlsTrustedCommonNameTypeBridgeVirtualRouterPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, msgVpnBridgeTlsTrustedCommonNameTypeBridgeVirtualRouterPropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *MsgVpnBridgeTLSTrustedCommonName) validateBridgeVirtualRouter(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.BridgeVirtualRouter) { // not required
 		return nil
 	}
@@ -97,6 +97,11 @@ func (m *MsgVpnBridgeTLSTrustedCommonName) validateBridgeVirtualRouter(formats s
 		return err
 	}
 
+	return nil
+}
+
+// ContextValidate validates this msg vpn bridge Tls trusted common name based on context it is used
+func (m *MsgVpnBridgeTLSTrustedCommonName) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

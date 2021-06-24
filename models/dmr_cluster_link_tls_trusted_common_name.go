@@ -6,27 +6,34 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // DmrClusterLinkTLSTrustedCommonName dmr cluster link Tls trusted common name
+//
 // swagger:model DmrClusterLinkTlsTrustedCommonName
 type DmrClusterLinkTLSTrustedCommonName struct {
 
-	// The name of the Cluster.
+	// The name of the Cluster. Deprecated since 2.18. Common Name validation has been replaced by Server Certificate Name validation.
 	DmrClusterName string `json:"dmrClusterName,omitempty"`
 
-	// The name of the node at the remote end of the Link.
+	// The name of the node at the remote end of the Link. Deprecated since 2.18. Common Name validation has been replaced by Server Certificate Name validation.
 	RemoteNodeName string `json:"remoteNodeName,omitempty"`
 
-	// The expected trusted common name of the remote certificate.
+	// The expected trusted common name of the remote certificate. Deprecated since 2.18. Common Name validation has been replaced by Server Certificate Name validation.
 	TLSTrustedCommonName string `json:"tlsTrustedCommonName,omitempty"`
 }
 
 // Validate validates this dmr cluster link Tls trusted common name
 func (m *DmrClusterLinkTLSTrustedCommonName) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this dmr cluster link Tls trusted common name based on context it is used
+func (m *DmrClusterLinkTLSTrustedCommonName) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

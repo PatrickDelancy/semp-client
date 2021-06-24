@@ -6,12 +6,14 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // MsgVpnRestDeliveryPointRestConsumerTLSTrustedCommonNameLinks msg vpn rest delivery point rest consumer Tls trusted common name links
+//
 // swagger:model MsgVpnRestDeliveryPointRestConsumerTlsTrustedCommonNameLinks
 type MsgVpnRestDeliveryPointRestConsumerTLSTrustedCommonNameLinks struct {
 
@@ -21,6 +23,11 @@ type MsgVpnRestDeliveryPointRestConsumerTLSTrustedCommonNameLinks struct {
 
 // Validate validates this msg vpn rest delivery point rest consumer Tls trusted common name links
 func (m *MsgVpnRestDeliveryPointRestConsumerTLSTrustedCommonNameLinks) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this msg vpn rest delivery point rest consumer Tls trusted common name links based on context it is used
+func (m *MsgVpnRestDeliveryPointRestConsumerTLSTrustedCommonNameLinks) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

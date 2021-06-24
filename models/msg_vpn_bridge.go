@@ -6,16 +6,17 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
 // MsgVpnBridge msg vpn bridge
+//
 // swagger:model MsgVpnBridge
 type MsgVpnBridge struct {
 
@@ -27,7 +28,7 @@ type MsgVpnBridge struct {
 	// <pre>
 	// "primary" - The Bridge is used for the primary virtual router.
 	// "backup" - The Bridge is used for the backup virtual router.
-	// "auto" - The Bridge is automatically assigned a router.
+	// "auto" - The Bridge is automatically assigned a virtual router at creation, depending on the broker's active-standby role.
 	// </pre>
 	//
 	// Enum: [primary backup auto]
@@ -45,13 +46,13 @@ type MsgVpnBridge struct {
 	// The Client Username the Bridge uses to login to the remote Message VPN. The default value is `""`.
 	RemoteAuthenticationBasicClientUsername string `json:"remoteAuthenticationBasicClientUsername,omitempty"`
 
-	// The password for the Client Username. The default is to have no `remoteAuthenticationBasicPassword`.
+	// The password for the Client Username. This attribute is absent from a GET and not updated when absent in a PUT, subject to the exceptions in note 4. The default value is `""`.
 	RemoteAuthenticationBasicPassword string `json:"remoteAuthenticationBasicPassword,omitempty"`
 
-	// The PEM formatted content for the client certificate used by the Bridge to login to the remote Message VPN. It must consist of a private key and between one and three certificates comprising the certificate trust chain. Changing this attribute requires an HTTPS connection. The default value is `""`. Available since 2.9.
+	// The PEM formatted content for the client certificate used by the Bridge to login to the remote Message VPN. It must consist of a private key and between one and three certificates comprising the certificate trust chain. This attribute is absent from a GET and not updated when absent in a PUT, subject to the exceptions in note 4. Changing this attribute requires an HTTPS connection. The default value is `""`. Available since 2.9.
 	RemoteAuthenticationClientCertContent string `json:"remoteAuthenticationClientCertContent,omitempty"`
 
-	// The password for the client certificate. Changing this attribute requires an HTTPS connection. The default value is `""`. Available since 2.9.
+	// The password for the client certificate. This attribute is absent from a GET and not updated when absent in a PUT, subject to the exceptions in note 4. Changing this attribute requires an HTTPS connection. The default value is `""`. Available since 2.9.
 	RemoteAuthenticationClientCertPassword string `json:"remoteAuthenticationClientCertPassword,omitempty"`
 
 	// The authentication scheme for the remote Message VPN. The default value is `"basic"`. The allowed values and their meaning are:
@@ -67,7 +68,7 @@ type MsgVpnBridge struct {
 	// The maximum number of retry attempts to establish a connection to the remote Message VPN. A value of 0 means to retry forever. The default value is `0`.
 	RemoteConnectionRetryCount int64 `json:"remoteConnectionRetryCount,omitempty"`
 
-	// The number of seconds to delay before retrying to connect to the remote Message VPN. The default value is `3`.
+	// The number of seconds the broker waits for the bridge connection to be established before attempting a new connection. The default value is `3`.
 	RemoteConnectionRetryDelay int64 `json:"remoteConnectionRetryDelay,omitempty"`
 
 	// The priority for deliver-to-one (DTO) messages transmitted from the remote Message VPN. The default value is `"p1"`. The allowed values and their meaning are:
@@ -83,7 +84,7 @@ type MsgVpnBridge struct {
 	// Enum: [p1 p2 p3 p4 da]
 	RemoteDeliverToOnePriority string `json:"remoteDeliverToOnePriority,omitempty"`
 
-	// The colon-separated list of cipher-suites supported for TLS connections to the remote Message VPN. The value "default" implies all supported suites ordered from most secure to least secure. The default value is `"default"`.
+	// The colon-separated list of cipher suites supported for TLS connections to the remote Message VPN. The value "default" implies all supported suites ordered from most secure to least secure. The default value is `"default"`.
 	TLSCipherSuiteList string `json:"tlsCipherSuiteList,omitempty"`
 }
 
@@ -135,14 +136,13 @@ const (
 
 // prop value enum
 func (m *MsgVpnBridge) validateBridgeVirtualRouterEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, msgVpnBridgeTypeBridgeVirtualRouterPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, msgVpnBridgeTypeBridgeVirtualRouterPropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *MsgVpnBridge) validateBridgeVirtualRouter(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.BridgeVirtualRouter) { // not required
 		return nil
 	}
@@ -172,20 +172,19 @@ const (
 	// MsgVpnBridgeRemoteAuthenticationSchemeBasic captures enum value "basic"
 	MsgVpnBridgeRemoteAuthenticationSchemeBasic string = "basic"
 
-	// MsgVpnBridgeRemoteAuthenticationSchemeClientCertificate captures enum value "client-certificate"
-	MsgVpnBridgeRemoteAuthenticationSchemeClientCertificate string = "client-certificate"
+	// MsgVpnBridgeRemoteAuthenticationSchemeClientDashCertificate captures enum value "client-certificate"
+	MsgVpnBridgeRemoteAuthenticationSchemeClientDashCertificate string = "client-certificate"
 )
 
 // prop value enum
 func (m *MsgVpnBridge) validateRemoteAuthenticationSchemeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, msgVpnBridgeTypeRemoteAuthenticationSchemePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, msgVpnBridgeTypeRemoteAuthenticationSchemePropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *MsgVpnBridge) validateRemoteAuthenticationScheme(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.RemoteAuthenticationScheme) { // not required
 		return nil
 	}
@@ -230,14 +229,13 @@ const (
 
 // prop value enum
 func (m *MsgVpnBridge) validateRemoteDeliverToOnePriorityEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, msgVpnBridgeTypeRemoteDeliverToOnePriorityPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, msgVpnBridgeTypeRemoteDeliverToOnePriorityPropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *MsgVpnBridge) validateRemoteDeliverToOnePriority(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.RemoteDeliverToOnePriority) { // not required
 		return nil
 	}
@@ -247,6 +245,11 @@ func (m *MsgVpnBridge) validateRemoteDeliverToOnePriority(formats strfmt.Registr
 		return err
 	}
 
+	return nil
+}
+
+// ContextValidate validates this msg vpn bridge based on context it is used
+func (m *MsgVpnBridge) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

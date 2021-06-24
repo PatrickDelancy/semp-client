@@ -6,16 +6,21 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
 // SempMeta semp meta
+//
 // swagger:model SempMeta
 type SempMeta struct {
+
+	// The total number of objects requested, irrespective of page size. This may be a count of all objects in a collection or a filtered subset. It represents a snapshot in time and may change when paging through results.
+	Count int64 `json:"count,omitempty"`
 
 	// error
 	Error *SempError `json:"error,omitempty"`
@@ -59,7 +64,6 @@ func (m *SempMeta) Validate(formats strfmt.Registry) error {
 }
 
 func (m *SempMeta) validateError(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Error) { // not required
 		return nil
 	}
@@ -77,7 +81,6 @@ func (m *SempMeta) validateError(formats strfmt.Registry) error {
 }
 
 func (m *SempMeta) validatePaging(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Paging) { // not required
 		return nil
 	}
@@ -116,6 +119,70 @@ func (m *SempMeta) validateResponseCode(formats strfmt.Registry) error {
 
 	if err := validate.Required("responseCode", "body", m.ResponseCode); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validate this semp meta based on the context it is used
+func (m *SempMeta) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateError(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidatePaging(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateRequest(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *SempMeta) contextValidateError(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Error != nil {
+		if err := m.Error.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("error")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *SempMeta) contextValidatePaging(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Paging != nil {
+		if err := m.Paging.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("paging")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *SempMeta) contextValidateRequest(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Request != nil {
+		if err := m.Request.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("request")
+			}
+			return err
+		}
 	}
 
 	return nil

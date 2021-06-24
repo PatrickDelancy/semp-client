@@ -6,59 +6,31 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
-	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-	"github.com/go-openapi/validate"
 )
 
 // AboutAPI about Api
+//
 // swagger:model AboutApi
 type AboutAPI struct {
 
 	// The platform running the SEMP API.
-	// Required: true
-	Platform *string `json:"platform"`
+	Platform string `json:"platform,omitempty"`
 
 	// The version of the SEMP API.
-	// Required: true
-	SempVersion *string `json:"sempVersion"`
+	SempVersion string `json:"sempVersion,omitempty"`
 }
 
 // Validate validates this about Api
 func (m *AboutAPI) Validate(formats strfmt.Registry) error {
-	var res []error
-
-	if err := m.validatePlatform(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateSempVersion(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if len(res) > 0 {
-		return errors.CompositeValidationError(res...)
-	}
 	return nil
 }
 
-func (m *AboutAPI) validatePlatform(formats strfmt.Registry) error {
-
-	if err := validate.Required("platform", "body", m.Platform); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *AboutAPI) validateSempVersion(formats strfmt.Registry) error {
-
-	if err := validate.Required("sempVersion", "body", m.SempVersion); err != nil {
-		return err
-	}
-
+// ContextValidate validates this about Api based on context it is used
+func (m *AboutAPI) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

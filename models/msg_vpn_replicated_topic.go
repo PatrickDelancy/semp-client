@@ -6,16 +6,17 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
 // MsgVpnReplicatedTopic msg vpn replicated topic
+//
 // swagger:model MsgVpnReplicatedTopic
 type MsgVpnReplicatedTopic struct {
 
@@ -31,7 +32,7 @@ type MsgVpnReplicatedTopic struct {
 	// "sync" - Messages are acknowledged when replicated (spooled remotely).
 	// "async" - Messages are acknowledged when pending replication (spooled locally).
 	// </pre>
-	//  Available since 2.1.
+	//
 	// Enum: [sync async]
 	ReplicationMode string `json:"replicationMode,omitempty"`
 }
@@ -73,14 +74,13 @@ const (
 
 // prop value enum
 func (m *MsgVpnReplicatedTopic) validateReplicationModeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, msgVpnReplicatedTopicTypeReplicationModePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, msgVpnReplicatedTopicTypeReplicationModePropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *MsgVpnReplicatedTopic) validateReplicationMode(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.ReplicationMode) { // not required
 		return nil
 	}
@@ -90,6 +90,11 @@ func (m *MsgVpnReplicatedTopic) validateReplicationMode(formats strfmt.Registry)
 		return err
 	}
 
+	return nil
+}
+
+// ContextValidate validates this msg vpn replicated topic based on context it is used
+func (m *MsgVpnReplicatedTopic) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

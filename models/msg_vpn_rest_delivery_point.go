@@ -6,12 +6,14 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // MsgVpnRestDeliveryPoint msg vpn rest delivery point
+//
 // swagger:model MsgVpnRestDeliveryPoint
 type MsgVpnRestDeliveryPoint struct {
 
@@ -26,10 +28,21 @@ type MsgVpnRestDeliveryPoint struct {
 
 	// The name of the REST Delivery Point.
 	RestDeliveryPointName string `json:"restDeliveryPointName,omitempty"`
+
+	// The name of the service that this REST Delivery Point connects to. Internally the broker does not use this value; it is informational only. The default value is `""`. Available since 2.19.
+	Service string `json:"service,omitempty"`
+
+	// The name of the vendor that this REST Delivery Point connects to. Internally the broker does not use this value; it is informational only. The default value is `""`. Available since 2.19.
+	Vendor string `json:"vendor,omitempty"`
 }
 
 // Validate validates this msg vpn rest delivery point
 func (m *MsgVpnRestDeliveryPoint) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this msg vpn rest delivery point based on context it is used
+func (m *MsgVpnRestDeliveryPoint) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

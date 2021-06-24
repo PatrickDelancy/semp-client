@@ -6,16 +6,17 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
 // MsgVpnBridgeRemoteMsgVpn msg vpn bridge remote msg vpn
+//
 // swagger:model MsgVpnBridgeRemoteMsgVpn
 type MsgVpnBridgeRemoteMsgVpn struct {
 
@@ -27,7 +28,7 @@ type MsgVpnBridgeRemoteMsgVpn struct {
 	// <pre>
 	// "primary" - The Bridge is used for the primary virtual router.
 	// "backup" - The Bridge is used for the backup virtual router.
-	// "auto" - The Bridge is automatically assigned a router.
+	// "auto" - The Bridge is automatically assigned a virtual router at creation, depending on the broker's active-standby role.
 	// </pre>
 	//
 	// Enum: [primary backup auto]
@@ -51,7 +52,7 @@ type MsgVpnBridgeRemoteMsgVpn struct {
 	// The name of the Message VPN.
 	MsgVpnName string `json:"msgVpnName,omitempty"`
 
-	// The password for the Client Username. The default is to have no `password`.
+	// The password for the Client Username. This attribute is absent from a GET and not updated when absent in a PUT, subject to the exceptions in note 4. The default value is `""`.
 	Password string `json:"password,omitempty"`
 
 	// The queue binding of the Bridge in the remote Message VPN. The default value is `""`.
@@ -66,10 +67,10 @@ type MsgVpnBridgeRemoteMsgVpn struct {
 	// The name of the remote Message VPN.
 	RemoteMsgVpnName string `json:"remoteMsgVpnName,omitempty"`
 
-	// Enable or disable TLS encryption for the remote Message VPN connection. The default value is `false`.
+	// Enable or disable encryption (TLS) for the remote Message VPN connection. The default value is `false`.
 	TLSEnabled bool `json:"tlsEnabled,omitempty"`
 
-	// The Client Profile for the unidirectional Bridge of the remote Message VPN. The Client Profile must exist in the local Message VPN, and it is used only for the TCP parameters. The default value is `"#client-profile"`.
+	// The Client Profile for the unidirectional Bridge of the remote Message VPN. The Client Profile must exist in the local Message VPN, and it is used only for the TCP parameters. Note that the default client profile has a TCP maximum window size of 2MB. The default value is `"#client-profile"`.
 	UnidirectionalClientProfile string `json:"unidirectionalClientProfile,omitempty"`
 }
 
@@ -113,14 +114,13 @@ const (
 
 // prop value enum
 func (m *MsgVpnBridgeRemoteMsgVpn) validateBridgeVirtualRouterEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, msgVpnBridgeRemoteMsgVpnTypeBridgeVirtualRouterPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, msgVpnBridgeRemoteMsgVpnTypeBridgeVirtualRouterPropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *MsgVpnBridgeRemoteMsgVpn) validateBridgeVirtualRouter(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.BridgeVirtualRouter) { // not required
 		return nil
 	}
@@ -130,6 +130,11 @@ func (m *MsgVpnBridgeRemoteMsgVpn) validateBridgeVirtualRouter(formats strfmt.Re
 		return err
 	}
 
+	return nil
+}
+
+// ContextValidate validates this msg vpn bridge remote msg vpn based on context it is used
+func (m *MsgVpnBridgeRemoteMsgVpn) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

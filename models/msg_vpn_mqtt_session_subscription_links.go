@@ -6,12 +6,14 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // MsgVpnMqttSessionSubscriptionLinks msg vpn mqtt session subscription links
+//
 // swagger:model MsgVpnMqttSessionSubscriptionLinks
 type MsgVpnMqttSessionSubscriptionLinks struct {
 
@@ -21,6 +23,11 @@ type MsgVpnMqttSessionSubscriptionLinks struct {
 
 // Validate validates this msg vpn mqtt session subscription links
 func (m *MsgVpnMqttSessionSubscriptionLinks) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this msg vpn mqtt session subscription links based on context it is used
+func (m *MsgVpnMqttSessionSubscriptionLinks) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

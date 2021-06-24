@@ -6,16 +6,17 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
 // MsgVpnMqttSessionSubscription msg vpn mqtt session subscription
+//
 // swagger:model MsgVpnMqttSessionSubscription
 type MsgVpnMqttSessionSubscription struct {
 
@@ -79,14 +80,13 @@ const (
 
 // prop value enum
 func (m *MsgVpnMqttSessionSubscription) validateMqttSessionVirtualRouterEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, msgVpnMqttSessionSubscriptionTypeMqttSessionVirtualRouterPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, msgVpnMqttSessionSubscriptionTypeMqttSessionVirtualRouterPropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *MsgVpnMqttSessionSubscription) validateMqttSessionVirtualRouter(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.MqttSessionVirtualRouter) { // not required
 		return nil
 	}
@@ -96,6 +96,11 @@ func (m *MsgVpnMqttSessionSubscription) validateMqttSessionVirtualRouter(formats
 		return err
 	}
 
+	return nil
+}
+
+// ContextValidate validates this msg vpn mqtt session subscription based on context it is used
+func (m *MsgVpnMqttSessionSubscription) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

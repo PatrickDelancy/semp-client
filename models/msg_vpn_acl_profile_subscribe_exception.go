@@ -6,26 +6,27 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
 // MsgVpnACLProfileSubscribeException msg vpn Acl profile subscribe exception
+//
 // swagger:model MsgVpnAclProfileSubscribeException
 type MsgVpnACLProfileSubscribeException struct {
 
-	// The name of the ACL Profile.
+	// The name of the ACL Profile. Deprecated since 2.14. Replaced by subscribeTopicExceptions.
 	ACLProfileName string `json:"aclProfileName,omitempty"`
 
-	// The name of the Message VPN.
+	// The name of the Message VPN. Deprecated since 2.14. Replaced by subscribeTopicExceptions.
 	MsgVpnName string `json:"msgVpnName,omitempty"`
 
-	// The topic for the exception to the default action taken. May include wildcard characters.
+	// The topic for the exception to the default action taken. May include wildcard characters. Deprecated since 2.14. Replaced by subscribeTopicExceptions.
 	SubscribeExceptionTopic string `json:"subscribeExceptionTopic,omitempty"`
 
 	// The syntax of the topic for the exception to the default action taken. The allowed values and their meaning are:
@@ -34,7 +35,7 @@ type MsgVpnACLProfileSubscribeException struct {
 	// "smf" - Topic uses SMF syntax.
 	// "mqtt" - Topic uses MQTT syntax.
 	// </pre>
-	//
+	//  Deprecated since 2.14. Replaced by subscribeTopicExceptions.
 	// Enum: [smf mqtt]
 	TopicSyntax string `json:"topicSyntax,omitempty"`
 }
@@ -76,14 +77,13 @@ const (
 
 // prop value enum
 func (m *MsgVpnACLProfileSubscribeException) validateTopicSyntaxEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, msgVpnAclProfileSubscribeExceptionTypeTopicSyntaxPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, msgVpnAclProfileSubscribeExceptionTypeTopicSyntaxPropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *MsgVpnACLProfileSubscribeException) validateTopicSyntax(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.TopicSyntax) { // not required
 		return nil
 	}
@@ -93,6 +93,11 @@ func (m *MsgVpnACLProfileSubscribeException) validateTopicSyntax(formats strfmt.
 		return err
 	}
 
+	return nil
+}
+
+// ContextValidate validates this msg vpn Acl profile subscribe exception based on context it is used
+func (m *MsgVpnACLProfileSubscribeException) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

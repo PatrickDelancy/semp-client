@@ -6,17 +6,22 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // MsgVpnLinks msg vpn links
+//
 // swagger:model MsgVpnLinks
 type MsgVpnLinks struct {
 
 	// The URI of this Message VPN's collection of ACL Profile objects.
 	ACLProfilesURI string `json:"aclProfilesUri,omitempty"`
+
+	// The URI of this Message VPN's collection of OAuth Provider objects. Available since 2.13.
+	AuthenticationOauthProvidersURI string `json:"authenticationOauthProvidersUri,omitempty"`
 
 	// The URI of this Message VPN's collection of LDAP Authorization Group objects.
 	AuthorizationGroupsURI string `json:"authorizationGroupsUri,omitempty"`
@@ -51,13 +56,16 @@ type MsgVpnLinks struct {
 	// The URI of this Message VPN's collection of MQTT Session objects. Available since 2.1.
 	MqttSessionsURI string `json:"mqttSessionsUri,omitempty"`
 
+	// The URI of this Message VPN's collection of Queue Template objects. Available since 2.14.
+	QueueTemplatesURI string `json:"queueTemplatesUri,omitempty"`
+
 	// The URI of this Message VPN's collection of Queue objects.
 	QueuesURI string `json:"queuesUri,omitempty"`
 
 	// The URI of this Message VPN's collection of Replay Log objects. Available since 2.10.
 	ReplayLogsURI string `json:"replayLogsUri,omitempty"`
 
-	// The URI of this Message VPN's collection of Replicated Topic objects. Available since 2.9.
+	// The URI of this Message VPN's collection of Replicated Topic objects. Available since 2.1.
 	ReplicatedTopicsURI string `json:"replicatedTopicsUri,omitempty"`
 
 	// The URI of this Message VPN's collection of REST Delivery Point objects.
@@ -65,6 +73,9 @@ type MsgVpnLinks struct {
 
 	// The URI of this Message VPN's collection of Sequenced Topic objects.
 	SequencedTopicsURI string `json:"sequencedTopicsUri,omitempty"`
+
+	// The URI of this Message VPN's collection of Topic Endpoint Template objects. Available since 2.14.
+	TopicEndpointTemplatesURI string `json:"topicEndpointTemplatesUri,omitempty"`
 
 	// The URI of this Message VPN's collection of Topic Endpoint objects. Available since 2.1.
 	TopicEndpointsURI string `json:"topicEndpointsUri,omitempty"`
@@ -75,6 +86,11 @@ type MsgVpnLinks struct {
 
 // Validate validates this msg vpn links
 func (m *MsgVpnLinks) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this msg vpn links based on context it is used
+func (m *MsgVpnLinks) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

@@ -6,16 +6,17 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
 // MsgVpnQueue msg vpn queue
+//
 // swagger:model MsgVpnQueue
 type MsgVpnQueue struct {
 
@@ -35,6 +36,9 @@ type MsgVpnQueue struct {
 	// The name of the Dead Message Queue (DMQ) used by the Queue. The default value is `"#DEAD_MSG_QUEUE"`. Available since 2.2.
 	DeadMsgQueue string `json:"deadMsgQueue,omitempty"`
 
+	// Enable or disable the ability for client applications to query the message delivery count of messages received from the Queue. This is a controlled availability feature. Please contact Solace to find out if this feature is supported for your use case. The default value is `false`. Available since 2.19.
+	DeliveryCountEnabled bool `json:"deliveryCountEnabled,omitempty"`
+
 	// Enable or disable the transmission of messages from the Queue. The default value is `false`.
 	EgressEnabled bool `json:"egressEnabled,omitempty"`
 
@@ -53,13 +57,13 @@ type MsgVpnQueue struct {
 	// The maximum number of consumer flows that can bind to the Queue. The default value is `1000`.
 	MaxBindCount int64 `json:"maxBindCount,omitempty"`
 
-	// The maximum number of messages delivered but not acknowledged per flow for the Queue. The default is the max value supported by the platform.
+	// The maximum number of messages delivered but not acknowledged per flow for the Queue. The default value is `10000`.
 	MaxDeliveredUnackedMsgsPerFlow int64 `json:"maxDeliveredUnackedMsgsPerFlow,omitempty"`
 
 	// The maximum message size allowed in the Queue, in bytes (B). The default value is `10000000`.
 	MaxMsgSize int32 `json:"maxMsgSize,omitempty"`
 
-	// The maximum message spool usage allowed by the Queue, in megabytes (MB). A value of 0 only allows spooling of the last message received and disables quota checking. The default varies by platform.
+	// The maximum message spool usage allowed by the Queue, in megabytes (MB). A value of 0 only allows spooling of the last message received and disables quota checking. The default value is `5000`.
 	MaxMsgSpoolUsage int64 `json:"maxMsgSpoolUsage,omitempty"`
 
 	// The maximum number of times the Queue will attempt redelivery of a message prior to it being discarded or moved to the DMQ. A value of 0 means to retry forever. The default value is `0`.
@@ -89,6 +93,9 @@ type MsgVpnQueue struct {
 
 	// The name of the Queue.
 	QueueName string `json:"queueName,omitempty"`
+
+	// Enable or disable message redelivery. When enabled, the number of redelivery attempts is controlled by maxRedeliveryCount. When disabled, the message will never be delivered from the queue more than once. The default value is `true`. Available since 2.18.
+	RedeliveryEnabled bool `json:"redeliveryEnabled,omitempty"`
 
 	// Enable or disable the checking of low priority messages against the `rejectLowPriorityMsgLimit`. This may only be enabled if `rejectMsgToSenderOnDiscardBehavior` does not have a value of `"never"`. The default value is `false`.
 	RejectLowPriorityMsgEnabled bool `json:"rejectLowPriorityMsgEnabled,omitempty"`
@@ -165,20 +172,19 @@ const (
 	// MsgVpnQueueAccessTypeExclusive captures enum value "exclusive"
 	MsgVpnQueueAccessTypeExclusive string = "exclusive"
 
-	// MsgVpnQueueAccessTypeNonExclusive captures enum value "non-exclusive"
-	MsgVpnQueueAccessTypeNonExclusive string = "non-exclusive"
+	// MsgVpnQueueAccessTypeNonDashExclusive captures enum value "non-exclusive"
+	MsgVpnQueueAccessTypeNonDashExclusive string = "non-exclusive"
 )
 
 // prop value enum
 func (m *MsgVpnQueue) validateAccessTypeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, msgVpnQueueTypeAccessTypePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, msgVpnQueueTypeAccessTypePropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *MsgVpnQueue) validateAccessType(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.AccessType) { // not required
 		return nil
 	}
@@ -192,7 +198,6 @@ func (m *MsgVpnQueue) validateAccessType(formats strfmt.Registry) error {
 }
 
 func (m *MsgVpnQueue) validateEventBindCountThreshold(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.EventBindCountThreshold) { // not required
 		return nil
 	}
@@ -210,7 +215,6 @@ func (m *MsgVpnQueue) validateEventBindCountThreshold(formats strfmt.Registry) e
 }
 
 func (m *MsgVpnQueue) validateEventMsgSpoolUsageThreshold(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.EventMsgSpoolUsageThreshold) { // not required
 		return nil
 	}
@@ -228,7 +232,6 @@ func (m *MsgVpnQueue) validateEventMsgSpoolUsageThreshold(formats strfmt.Registr
 }
 
 func (m *MsgVpnQueue) validateEventRejectLowPriorityMsgLimitThreshold(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.EventRejectLowPriorityMsgLimitThreshold) { // not required
 		return nil
 	}
@@ -259,17 +262,17 @@ func init() {
 
 const (
 
-	// MsgVpnQueuePermissionNoAccess captures enum value "no-access"
-	MsgVpnQueuePermissionNoAccess string = "no-access"
+	// MsgVpnQueuePermissionNoDashAccess captures enum value "no-access"
+	MsgVpnQueuePermissionNoDashAccess string = "no-access"
 
-	// MsgVpnQueuePermissionReadOnly captures enum value "read-only"
-	MsgVpnQueuePermissionReadOnly string = "read-only"
+	// MsgVpnQueuePermissionReadDashOnly captures enum value "read-only"
+	MsgVpnQueuePermissionReadDashOnly string = "read-only"
 
 	// MsgVpnQueuePermissionConsume captures enum value "consume"
 	MsgVpnQueuePermissionConsume string = "consume"
 
-	// MsgVpnQueuePermissionModifyTopic captures enum value "modify-topic"
-	MsgVpnQueuePermissionModifyTopic string = "modify-topic"
+	// MsgVpnQueuePermissionModifyDashTopic captures enum value "modify-topic"
+	MsgVpnQueuePermissionModifyDashTopic string = "modify-topic"
 
 	// MsgVpnQueuePermissionDelete captures enum value "delete"
 	MsgVpnQueuePermissionDelete string = "delete"
@@ -277,14 +280,13 @@ const (
 
 // prop value enum
 func (m *MsgVpnQueue) validatePermissionEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, msgVpnQueueTypePermissionPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, msgVpnQueueTypePermissionPropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *MsgVpnQueue) validatePermission(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Permission) { // not required
 		return nil
 	}
@@ -314,8 +316,8 @@ const (
 	// MsgVpnQueueRejectMsgToSenderOnDiscardBehaviorAlways captures enum value "always"
 	MsgVpnQueueRejectMsgToSenderOnDiscardBehaviorAlways string = "always"
 
-	// MsgVpnQueueRejectMsgToSenderOnDiscardBehaviorWhenQueueEnabled captures enum value "when-queue-enabled"
-	MsgVpnQueueRejectMsgToSenderOnDiscardBehaviorWhenQueueEnabled string = "when-queue-enabled"
+	// MsgVpnQueueRejectMsgToSenderOnDiscardBehaviorWhenDashQueueDashEnabled captures enum value "when-queue-enabled"
+	MsgVpnQueueRejectMsgToSenderOnDiscardBehaviorWhenDashQueueDashEnabled string = "when-queue-enabled"
 
 	// MsgVpnQueueRejectMsgToSenderOnDiscardBehaviorNever captures enum value "never"
 	MsgVpnQueueRejectMsgToSenderOnDiscardBehaviorNever string = "never"
@@ -323,14 +325,13 @@ const (
 
 // prop value enum
 func (m *MsgVpnQueue) validateRejectMsgToSenderOnDiscardBehaviorEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, msgVpnQueueTypeRejectMsgToSenderOnDiscardBehaviorPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, msgVpnQueueTypeRejectMsgToSenderOnDiscardBehaviorPropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *MsgVpnQueue) validateRejectMsgToSenderOnDiscardBehavior(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.RejectMsgToSenderOnDiscardBehavior) { // not required
 		return nil
 	}
@@ -338,6 +339,70 @@ func (m *MsgVpnQueue) validateRejectMsgToSenderOnDiscardBehavior(formats strfmt.
 	// value enum
 	if err := m.validateRejectMsgToSenderOnDiscardBehaviorEnum("rejectMsgToSenderOnDiscardBehavior", "body", m.RejectMsgToSenderOnDiscardBehavior); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validate this msg vpn queue based on the context it is used
+func (m *MsgVpnQueue) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateEventBindCountThreshold(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateEventMsgSpoolUsageThreshold(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateEventRejectLowPriorityMsgLimitThreshold(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *MsgVpnQueue) contextValidateEventBindCountThreshold(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.EventBindCountThreshold != nil {
+		if err := m.EventBindCountThreshold.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("eventBindCountThreshold")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *MsgVpnQueue) contextValidateEventMsgSpoolUsageThreshold(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.EventMsgSpoolUsageThreshold != nil {
+		if err := m.EventMsgSpoolUsageThreshold.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("eventMsgSpoolUsageThreshold")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *MsgVpnQueue) contextValidateEventRejectLowPriorityMsgLimitThreshold(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.EventRejectLowPriorityMsgLimitThreshold != nil {
+		if err := m.EventRejectLowPriorityMsgLimitThreshold.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("eventRejectLowPriorityMsgLimitThreshold")
+			}
+			return err
+		}
 	}
 
 	return nil

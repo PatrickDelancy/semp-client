@@ -6,16 +6,17 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
 // AboutUserMsgVpn about user msg vpn
+//
 // swagger:model AboutUserMsgVpn
 type AboutUserMsgVpn struct {
 
@@ -65,23 +66,22 @@ const (
 	// AboutUserMsgVpnAccessLevelNone captures enum value "none"
 	AboutUserMsgVpnAccessLevelNone string = "none"
 
-	// AboutUserMsgVpnAccessLevelReadOnly captures enum value "read-only"
-	AboutUserMsgVpnAccessLevelReadOnly string = "read-only"
+	// AboutUserMsgVpnAccessLevelReadDashOnly captures enum value "read-only"
+	AboutUserMsgVpnAccessLevelReadDashOnly string = "read-only"
 
-	// AboutUserMsgVpnAccessLevelReadWrite captures enum value "read-write"
-	AboutUserMsgVpnAccessLevelReadWrite string = "read-write"
+	// AboutUserMsgVpnAccessLevelReadDashWrite captures enum value "read-write"
+	AboutUserMsgVpnAccessLevelReadDashWrite string = "read-write"
 )
 
 // prop value enum
 func (m *AboutUserMsgVpn) validateAccessLevelEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, aboutUserMsgVpnTypeAccessLevelPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, aboutUserMsgVpnTypeAccessLevelPropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *AboutUserMsgVpn) validateAccessLevel(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.AccessLevel) { // not required
 		return nil
 	}
@@ -91,6 +91,11 @@ func (m *AboutUserMsgVpn) validateAccessLevel(formats strfmt.Registry) error {
 		return err
 	}
 
+	return nil
+}
+
+// ContextValidate validates this about user msg vpn based on context it is used
+func (m *AboutUserMsgVpn) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

@@ -6,12 +6,14 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // MsgVpnBridgeLinks msg vpn bridge links
+//
 // swagger:model MsgVpnBridgeLinks
 type MsgVpnBridgeLinks struct {
 
@@ -21,7 +23,7 @@ type MsgVpnBridgeLinks struct {
 	// The URI of this Bridge's collection of Remote Subscription objects.
 	RemoteSubscriptionsURI string `json:"remoteSubscriptionsUri,omitempty"`
 
-	// The URI of this Bridge's collection of Trusted Common Name objects.
+	// The URI of this Bridge's collection of Trusted Common Name objects. Deprecated since 2.18. Common Name validation has been replaced by Server Certificate Name validation.
 	TLSTrustedCommonNamesURI string `json:"tlsTrustedCommonNamesUri,omitempty"`
 
 	// The URI of this Bridge object.
@@ -30,6 +32,11 @@ type MsgVpnBridgeLinks struct {
 
 // Validate validates this msg vpn bridge links
 func (m *MsgVpnBridgeLinks) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this msg vpn bridge links based on context it is used
+func (m *MsgVpnBridgeLinks) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

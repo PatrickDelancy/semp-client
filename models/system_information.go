@@ -6,59 +6,31 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
-	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
-	"github.com/go-openapi/validate"
 )
 
 // SystemInformation system information
+//
 // swagger:model SystemInformation
 type SystemInformation struct {
 
-	// The platform running the SEMP API.
-	// Required: true
-	Platform *string `json:"platform"`
+	// The platform running the SEMP API. Deprecated since 2.2. /systemInformation was replaced by /about/api.
+	Platform string `json:"platform,omitempty"`
 
-	// The version of the SEMP API.
-	// Required: true
-	SempVersion *string `json:"sempVersion"`
+	// The version of the SEMP API. Deprecated since 2.2. /systemInformation was replaced by /about/api.
+	SempVersion string `json:"sempVersion,omitempty"`
 }
 
 // Validate validates this system information
 func (m *SystemInformation) Validate(formats strfmt.Registry) error {
-	var res []error
-
-	if err := m.validatePlatform(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateSempVersion(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if len(res) > 0 {
-		return errors.CompositeValidationError(res...)
-	}
 	return nil
 }
 
-func (m *SystemInformation) validatePlatform(formats strfmt.Registry) error {
-
-	if err := validate.Required("platform", "body", m.Platform); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *SystemInformation) validateSempVersion(formats strfmt.Registry) error {
-
-	if err := validate.Required("sempVersion", "body", m.SempVersion); err != nil {
-		return err
-	}
-
+// ContextValidate validates this system information based on context it is used
+func (m *SystemInformation) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

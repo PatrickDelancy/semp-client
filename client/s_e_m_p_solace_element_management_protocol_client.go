@@ -8,15 +8,9 @@ package client
 import (
 	"github.com/go-openapi/runtime"
 	httptransport "github.com/go-openapi/runtime/client"
+	"github.com/go-openapi/strfmt"
 
-	strfmt "github.com/go-openapi/strfmt"
-
-	"github.com/ExalDraen/semp-client/client/about"
-	"github.com/ExalDraen/semp-client/client/dmr_cluster"
-	"github.com/ExalDraen/semp-client/client/msg_vpn"
-	"github.com/ExalDraen/semp-client/client/operations"
-	"github.com/ExalDraen/semp-client/client/system_information"
-	"github.com/ExalDraen/semp-client/client/username"
+	"github.com/PatrickDelancy/semp-client/client/all"
 )
 
 // Default s e m p solace element management protocol HTTP client.
@@ -61,19 +55,7 @@ func New(transport runtime.ClientTransport, formats strfmt.Registry) *SEMPSolace
 
 	cli := new(SEMPSolaceElementManagementProtocol)
 	cli.Transport = transport
-
-	cli.About = about.New(transport, formats)
-
-	cli.DmrCluster = dmr_cluster.New(transport, formats)
-
-	cli.MsgVpn = msg_vpn.New(transport, formats)
-
-	cli.Operations = operations.New(transport, formats)
-
-	cli.SystemInformation = system_information.New(transport, formats)
-
-	cli.Username = username.New(transport, formats)
-
+	cli.All = all.New(transport, formats)
 	return cli
 }
 
@@ -118,17 +100,7 @@ func (cfg *TransportConfig) WithSchemes(schemes []string) *TransportConfig {
 
 // SEMPSolaceElementManagementProtocol is a client for s e m p solace element management protocol
 type SEMPSolaceElementManagementProtocol struct {
-	About *about.Client
-
-	DmrCluster *dmr_cluster.Client
-
-	MsgVpn *msg_vpn.Client
-
-	Operations *operations.Client
-
-	SystemInformation *system_information.Client
-
-	Username *username.Client
+	All all.ClientService
 
 	Transport runtime.ClientTransport
 }
@@ -136,17 +108,5 @@ type SEMPSolaceElementManagementProtocol struct {
 // SetTransport changes the transport on the client and all its subresources
 func (c *SEMPSolaceElementManagementProtocol) SetTransport(transport runtime.ClientTransport) {
 	c.Transport = transport
-
-	c.About.SetTransport(transport)
-
-	c.DmrCluster.SetTransport(transport)
-
-	c.MsgVpn.SetTransport(transport)
-
-	c.Operations.SetTransport(transport)
-
-	c.SystemInformation.SetTransport(transport)
-
-	c.Username.SetTransport(transport)
-
+	c.All.SetTransport(transport)
 }

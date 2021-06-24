@@ -6,16 +6,17 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
 // MsgVpnBridgeRemoteSubscription msg vpn bridge remote subscription
+//
 // swagger:model MsgVpnBridgeRemoteSubscription
 type MsgVpnBridgeRemoteSubscription struct {
 
@@ -27,13 +28,13 @@ type MsgVpnBridgeRemoteSubscription struct {
 	// <pre>
 	// "primary" - The Bridge is used for the primary virtual router.
 	// "backup" - The Bridge is used for the backup virtual router.
-	// "auto" - The Bridge is automatically assigned a router.
+	// "auto" - The Bridge is automatically assigned a virtual router at creation, depending on the broker's active-standby role.
 	// </pre>
 	//
 	// Enum: [primary backup auto]
 	BridgeVirtualRouter string `json:"bridgeVirtualRouter,omitempty"`
 
-	// Enable deliver-always for the Bridge remote subscription topic instead of a deliver-to-one remote priority. A given topic for the Bridge may be deliver-to-one or deliver-always but not both.
+	// Enable or disable deliver-always for the Bridge remote subscription topic instead of a deliver-to-one remote priority. A given topic for the Bridge may be deliver-to-one or deliver-always but not both.
 	DeliverAlwaysEnabled bool `json:"deliverAlwaysEnabled,omitempty"`
 
 	// The name of the Message VPN.
@@ -83,14 +84,13 @@ const (
 
 // prop value enum
 func (m *MsgVpnBridgeRemoteSubscription) validateBridgeVirtualRouterEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, msgVpnBridgeRemoteSubscriptionTypeBridgeVirtualRouterPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, msgVpnBridgeRemoteSubscriptionTypeBridgeVirtualRouterPropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *MsgVpnBridgeRemoteSubscription) validateBridgeVirtualRouter(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.BridgeVirtualRouter) { // not required
 		return nil
 	}
@@ -100,6 +100,11 @@ func (m *MsgVpnBridgeRemoteSubscription) validateBridgeVirtualRouter(formats str
 		return err
 	}
 
+	return nil
+}
+
+// ContextValidate validates this msg vpn bridge remote subscription based on context it is used
+func (m *MsgVpnBridgeRemoteSubscription) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

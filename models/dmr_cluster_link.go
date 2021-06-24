@@ -6,20 +6,21 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
 // DmrClusterLink dmr cluster link
+//
 // swagger:model DmrClusterLink
 type DmrClusterLink struct {
 
-	// The password used to authenticate with the remote node when using basic internal authentication. If this per-Link password is not configured, the Cluster's password is used instead. The default is to have no `authenticationBasicPassword`.
+	// The password used to authenticate with the remote node when using basic internal authentication. If this per-Link password is not configured, the Cluster's password is used instead. This attribute is absent from a GET and not updated when absent in a PUT, subject to the exceptions in note 4. The default value is `""`.
 	AuthenticationBasicPassword string `json:"authenticationBasicPassword,omitempty"`
 
 	// The authentication scheme to be used by the Link which initiates connections to the remote node. The default value is `"basic"`. The allowed values and their meaning are:
@@ -69,12 +70,12 @@ type DmrClusterLink struct {
 	ClientProfileTCPKeepaliveCount int64 `json:"clientProfileTcpKeepaliveCount,omitempty"`
 
 	// The amount of time a connection must remain idle before TCP begins sending keepalive probes, in seconds. The default value is `3`.
-	ClientProfileTCPKeepaliveIDLETime int64 `json:"clientProfileTcpKeepaliveIdleTime,omitempty"`
+	ClientProfileTCPKeepaliveIdleTime int64 `json:"clientProfileTcpKeepaliveIdleTime,omitempty"`
 
 	// The amount of time between TCP keepalive retransmissions when no acknowledgement is received, in seconds. The default value is `1`.
 	ClientProfileTCPKeepaliveInterval int64 `json:"clientProfileTcpKeepaliveInterval,omitempty"`
 
-	// The TCP maximum segment size, in kilobytes. Changes are applied to all existing connections. The default value is `1460`.
+	// The TCP maximum segment size, in bytes. Changes are applied to all existing connections. The default value is `1460`.
 	ClientProfileTCPMaxSegmentSize int64 `json:"clientProfileTcpMaxSegmentSize,omitempty"`
 
 	// The TCP maximum window size, in kilobytes. Changes are applied to all existing connections. The default value is `256`.
@@ -106,7 +107,7 @@ type DmrClusterLink struct {
 	// queue event spool usage threshold
 	QueueEventSpoolUsageThreshold *EventThreshold `json:"queueEventSpoolUsageThreshold,omitempty"`
 
-	// The maximum number of messages delivered but not acknowledged per flow for the Queue. The default is the max value supported by the platform.
+	// The maximum number of messages delivered but not acknowledged per flow for the Queue. The default value is `1000000`.
 	QueueMaxDeliveredUnackedMsgsPerFlow int64 `json:"queueMaxDeliveredUnackedMsgsPerFlow,omitempty"`
 
 	// The maximum message spool usage by the Queue (quota), in megabytes (MB). The default varies by platform.
@@ -148,7 +149,7 @@ type DmrClusterLink struct {
 	// Enable or disable compression on the Link. The default value is `false`.
 	TransportCompressedEnabled bool `json:"transportCompressedEnabled,omitempty"`
 
-	// Enable or disable encryption on the Link. The default value is `false`.
+	// Enable or disable encryption (TLS) on the Link. The default value is `false`.
 	TransportTLSEnabled bool `json:"transportTlsEnabled,omitempty"`
 }
 
@@ -199,20 +200,19 @@ const (
 	// DmrClusterLinkAuthenticationSchemeBasic captures enum value "basic"
 	DmrClusterLinkAuthenticationSchemeBasic string = "basic"
 
-	// DmrClusterLinkAuthenticationSchemeClientCertificate captures enum value "client-certificate"
-	DmrClusterLinkAuthenticationSchemeClientCertificate string = "client-certificate"
+	// DmrClusterLinkAuthenticationSchemeClientDashCertificate captures enum value "client-certificate"
+	DmrClusterLinkAuthenticationSchemeClientDashCertificate string = "client-certificate"
 )
 
 // prop value enum
 func (m *DmrClusterLink) validateAuthenticationSchemeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, dmrClusterLinkTypeAuthenticationSchemePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, dmrClusterLinkTypeAuthenticationSchemePropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *DmrClusterLink) validateAuthenticationScheme(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.AuthenticationScheme) { // not required
 		return nil
 	}
@@ -251,14 +251,13 @@ const (
 
 // prop value enum
 func (m *DmrClusterLink) validateInitiatorEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, dmrClusterLinkTypeInitiatorPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, dmrClusterLinkTypeInitiatorPropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *DmrClusterLink) validateInitiator(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Initiator) { // not required
 		return nil
 	}
@@ -272,7 +271,6 @@ func (m *DmrClusterLink) validateInitiator(formats strfmt.Registry) error {
 }
 
 func (m *DmrClusterLink) validateQueueEventSpoolUsageThreshold(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.QueueEventSpoolUsageThreshold) { // not required
 		return nil
 	}
@@ -306,8 +304,8 @@ const (
 	// DmrClusterLinkQueueRejectMsgToSenderOnDiscardBehaviorAlways captures enum value "always"
 	DmrClusterLinkQueueRejectMsgToSenderOnDiscardBehaviorAlways string = "always"
 
-	// DmrClusterLinkQueueRejectMsgToSenderOnDiscardBehaviorWhenQueueEnabled captures enum value "when-queue-enabled"
-	DmrClusterLinkQueueRejectMsgToSenderOnDiscardBehaviorWhenQueueEnabled string = "when-queue-enabled"
+	// DmrClusterLinkQueueRejectMsgToSenderOnDiscardBehaviorWhenDashQueueDashEnabled captures enum value "when-queue-enabled"
+	DmrClusterLinkQueueRejectMsgToSenderOnDiscardBehaviorWhenDashQueueDashEnabled string = "when-queue-enabled"
 
 	// DmrClusterLinkQueueRejectMsgToSenderOnDiscardBehaviorNever captures enum value "never"
 	DmrClusterLinkQueueRejectMsgToSenderOnDiscardBehaviorNever string = "never"
@@ -315,14 +313,13 @@ const (
 
 // prop value enum
 func (m *DmrClusterLink) validateQueueRejectMsgToSenderOnDiscardBehaviorEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, dmrClusterLinkTypeQueueRejectMsgToSenderOnDiscardBehaviorPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, dmrClusterLinkTypeQueueRejectMsgToSenderOnDiscardBehaviorPropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *DmrClusterLink) validateQueueRejectMsgToSenderOnDiscardBehavior(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.QueueRejectMsgToSenderOnDiscardBehavior) { // not required
 		return nil
 	}
@@ -358,14 +355,13 @@ const (
 
 // prop value enum
 func (m *DmrClusterLink) validateSpanEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, dmrClusterLinkTypeSpanPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, dmrClusterLinkTypeSpanPropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *DmrClusterLink) validateSpan(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Span) { // not required
 		return nil
 	}
@@ -373,6 +369,34 @@ func (m *DmrClusterLink) validateSpan(formats strfmt.Registry) error {
 	// value enum
 	if err := m.validateSpanEnum("span", "body", m.Span); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validate this dmr cluster link based on the context it is used
+func (m *DmrClusterLink) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateQueueEventSpoolUsageThreshold(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *DmrClusterLink) contextValidateQueueEventSpoolUsageThreshold(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.QueueEventSpoolUsageThreshold != nil {
+		if err := m.QueueEventSpoolUsageThreshold.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("queueEventSpoolUsageThreshold")
+			}
+			return err
+		}
 	}
 
 	return nil

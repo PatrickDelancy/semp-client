@@ -6,16 +6,17 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
 // AboutUser about user
+//
 // swagger:model AboutUser
 type AboutUser struct {
 
@@ -30,6 +31,24 @@ type AboutUser struct {
 	//
 	// Enum: [admin none read-only read-write]
 	GlobalAccessLevel string `json:"globalAccessLevel,omitempty"`
+
+	// The timestamp of when the session was created. This value represents the number of seconds since 1970-01-01 00:00:00 UTC (Unix time). Available since 2.21.
+	SessionCreateTime int32 `json:"sessionCreateTime,omitempty"`
+
+	// The current server timestamp. This is provided as a reference point for the other timestamps provided. This value represents the number of seconds since 1970-01-01 00:00:00 UTC (Unix time). Available since 2.21.
+	SessionCurrentTime int32 `json:"sessionCurrentTime,omitempty"`
+
+	// The hard expiry time for the session. After this time the session will be invalid, regardless of activity. This value represents the number of seconds since 1970-01-01 00:00:00 UTC (Unix time). Available since 2.21.
+	SessionHardExpiryTime int32 `json:"sessionHardExpiryTime,omitempty"`
+
+	// An identifier for the session to differentiate this session from other sessions for the same user. This value is not guaranteed to be unique between active sessions for different users. Available since 2.21.
+	SessionID string `json:"sessionId,omitempty"`
+
+	// The session idle expiry time. After this time the session will be invalid if there has been no activity. This value represents the number of seconds since 1970-01-01 00:00:00 UTC (Unix time). Available since 2.21.
+	SessionIdleExpiryTime int32 `json:"sessionIdleExpiryTime,omitempty"`
+
+	// The username of the User. Available since 2.21.
+	Username string `json:"username,omitempty"`
 }
 
 // Validate validates this about user
@@ -66,23 +85,22 @@ const (
 	// AboutUserGlobalAccessLevelNone captures enum value "none"
 	AboutUserGlobalAccessLevelNone string = "none"
 
-	// AboutUserGlobalAccessLevelReadOnly captures enum value "read-only"
-	AboutUserGlobalAccessLevelReadOnly string = "read-only"
+	// AboutUserGlobalAccessLevelReadDashOnly captures enum value "read-only"
+	AboutUserGlobalAccessLevelReadDashOnly string = "read-only"
 
-	// AboutUserGlobalAccessLevelReadWrite captures enum value "read-write"
-	AboutUserGlobalAccessLevelReadWrite string = "read-write"
+	// AboutUserGlobalAccessLevelReadDashWrite captures enum value "read-write"
+	AboutUserGlobalAccessLevelReadDashWrite string = "read-write"
 )
 
 // prop value enum
 func (m *AboutUser) validateGlobalAccessLevelEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, aboutUserTypeGlobalAccessLevelPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, aboutUserTypeGlobalAccessLevelPropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *AboutUser) validateGlobalAccessLevel(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.GlobalAccessLevel) { // not required
 		return nil
 	}
@@ -92,6 +110,11 @@ func (m *AboutUser) validateGlobalAccessLevel(formats strfmt.Registry) error {
 		return err
 	}
 
+	return nil
+}
+
+// ContextValidate validates this about user based on context it is used
+func (m *AboutUser) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

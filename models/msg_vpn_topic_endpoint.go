@@ -6,16 +6,17 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
 // MsgVpnTopicEndpoint msg vpn topic endpoint
+//
 // swagger:model MsgVpnTopicEndpoint
 type MsgVpnTopicEndpoint struct {
 
@@ -35,6 +36,9 @@ type MsgVpnTopicEndpoint struct {
 	// The name of the Dead Message Queue (DMQ) used by the Topic Endpoint. The default value is `"#DEAD_MSG_QUEUE"`. Available since 2.2.
 	DeadMsgQueue string `json:"deadMsgQueue,omitempty"`
 
+	// Enable or disable the ability for client applications to query the message delivery count of messages received from the Topic Endpoint. This is a controlled availability feature. Please contact Solace to find out if this feature is supported for your use case. The default value is `false`. Available since 2.19.
+	DeliveryCountEnabled bool `json:"deliveryCountEnabled,omitempty"`
+
 	// Enable or disable the transmission of messages from the Topic Endpoint. The default value is `false`.
 	EgressEnabled bool `json:"egressEnabled,omitempty"`
 
@@ -53,7 +57,7 @@ type MsgVpnTopicEndpoint struct {
 	// The maximum number of consumer flows that can bind to the Topic Endpoint. The default value is `1`. Available since 2.4.
 	MaxBindCount int64 `json:"maxBindCount,omitempty"`
 
-	// The maximum number of messages delivered but not acknowledged per flow for the Topic Endpoint. The default is the max value supported by the platform.
+	// The maximum number of messages delivered but not acknowledged per flow for the Topic Endpoint. The default value is `10000`.
 	MaxDeliveredUnackedMsgsPerFlow int64 `json:"maxDeliveredUnackedMsgsPerFlow,omitempty"`
 
 	// The maximum message size allowed in the Topic Endpoint, in bytes (B). The default value is `10000000`.
@@ -62,7 +66,7 @@ type MsgVpnTopicEndpoint struct {
 	// The maximum number of times the Topic Endpoint will attempt redelivery of a message prior to it being discarded or moved to the DMQ. A value of 0 means to retry forever. The default value is `0`.
 	MaxRedeliveryCount int64 `json:"maxRedeliveryCount,omitempty"`
 
-	// The maximum message spool usage allowed by the Topic Endpoint, in megabytes (MB). A value of 0 only allows spooling of the last message received and disables quota checking. The default varies by platform.
+	// The maximum message spool usage allowed by the Topic Endpoint, in megabytes (MB). A value of 0 only allows spooling of the last message received and disables quota checking. The default value is `5000`.
 	MaxSpoolUsage int64 `json:"maxSpoolUsage,omitempty"`
 
 	// The maximum time in seconds a message can stay in the Topic Endpoint when `respectTtlEnabled` is `"true"`. A message expires when the lesser of the sender assigned time-to-live (TTL) in the message and the `maxTtl` configured for the Topic Endpoint, is exceeded. A value of 0 disables expiry. The default value is `0`.
@@ -86,6 +90,9 @@ type MsgVpnTopicEndpoint struct {
 	//
 	// Enum: [no-access read-only consume modify-topic delete]
 	Permission string `json:"permission,omitempty"`
+
+	// Enable or disable message redelivery. When enabled, the number of redelivery attempts is controlled by maxRedeliveryCount. When disabled, the message will never be delivered from the topic-endpoint more than once. The default value is `true`. Available since 2.18.
+	RedeliveryEnabled bool `json:"redeliveryEnabled,omitempty"`
 
 	// Enable or disable the checking of low priority messages against the `rejectLowPriorityMsgLimit`. This may only be enabled if `rejectMsgToSenderOnDiscardBehavior` does not have a value of `"never"`. The default value is `false`.
 	RejectLowPriorityMsgEnabled bool `json:"rejectLowPriorityMsgEnabled,omitempty"`
@@ -165,20 +172,19 @@ const (
 	// MsgVpnTopicEndpointAccessTypeExclusive captures enum value "exclusive"
 	MsgVpnTopicEndpointAccessTypeExclusive string = "exclusive"
 
-	// MsgVpnTopicEndpointAccessTypeNonExclusive captures enum value "non-exclusive"
-	MsgVpnTopicEndpointAccessTypeNonExclusive string = "non-exclusive"
+	// MsgVpnTopicEndpointAccessTypeNonDashExclusive captures enum value "non-exclusive"
+	MsgVpnTopicEndpointAccessTypeNonDashExclusive string = "non-exclusive"
 )
 
 // prop value enum
 func (m *MsgVpnTopicEndpoint) validateAccessTypeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, msgVpnTopicEndpointTypeAccessTypePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, msgVpnTopicEndpointTypeAccessTypePropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *MsgVpnTopicEndpoint) validateAccessType(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.AccessType) { // not required
 		return nil
 	}
@@ -192,7 +198,6 @@ func (m *MsgVpnTopicEndpoint) validateAccessType(formats strfmt.Registry) error 
 }
 
 func (m *MsgVpnTopicEndpoint) validateEventBindCountThreshold(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.EventBindCountThreshold) { // not required
 		return nil
 	}
@@ -210,7 +215,6 @@ func (m *MsgVpnTopicEndpoint) validateEventBindCountThreshold(formats strfmt.Reg
 }
 
 func (m *MsgVpnTopicEndpoint) validateEventRejectLowPriorityMsgLimitThreshold(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.EventRejectLowPriorityMsgLimitThreshold) { // not required
 		return nil
 	}
@@ -228,7 +232,6 @@ func (m *MsgVpnTopicEndpoint) validateEventRejectLowPriorityMsgLimitThreshold(fo
 }
 
 func (m *MsgVpnTopicEndpoint) validateEventSpoolUsageThreshold(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.EventSpoolUsageThreshold) { // not required
 		return nil
 	}
@@ -259,17 +262,17 @@ func init() {
 
 const (
 
-	// MsgVpnTopicEndpointPermissionNoAccess captures enum value "no-access"
-	MsgVpnTopicEndpointPermissionNoAccess string = "no-access"
+	// MsgVpnTopicEndpointPermissionNoDashAccess captures enum value "no-access"
+	MsgVpnTopicEndpointPermissionNoDashAccess string = "no-access"
 
-	// MsgVpnTopicEndpointPermissionReadOnly captures enum value "read-only"
-	MsgVpnTopicEndpointPermissionReadOnly string = "read-only"
+	// MsgVpnTopicEndpointPermissionReadDashOnly captures enum value "read-only"
+	MsgVpnTopicEndpointPermissionReadDashOnly string = "read-only"
 
 	// MsgVpnTopicEndpointPermissionConsume captures enum value "consume"
 	MsgVpnTopicEndpointPermissionConsume string = "consume"
 
-	// MsgVpnTopicEndpointPermissionModifyTopic captures enum value "modify-topic"
-	MsgVpnTopicEndpointPermissionModifyTopic string = "modify-topic"
+	// MsgVpnTopicEndpointPermissionModifyDashTopic captures enum value "modify-topic"
+	MsgVpnTopicEndpointPermissionModifyDashTopic string = "modify-topic"
 
 	// MsgVpnTopicEndpointPermissionDelete captures enum value "delete"
 	MsgVpnTopicEndpointPermissionDelete string = "delete"
@@ -277,14 +280,13 @@ const (
 
 // prop value enum
 func (m *MsgVpnTopicEndpoint) validatePermissionEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, msgVpnTopicEndpointTypePermissionPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, msgVpnTopicEndpointTypePermissionPropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *MsgVpnTopicEndpoint) validatePermission(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Permission) { // not required
 		return nil
 	}
@@ -314,8 +316,8 @@ const (
 	// MsgVpnTopicEndpointRejectMsgToSenderOnDiscardBehaviorAlways captures enum value "always"
 	MsgVpnTopicEndpointRejectMsgToSenderOnDiscardBehaviorAlways string = "always"
 
-	// MsgVpnTopicEndpointRejectMsgToSenderOnDiscardBehaviorWhenTopicEndpointEnabled captures enum value "when-topic-endpoint-enabled"
-	MsgVpnTopicEndpointRejectMsgToSenderOnDiscardBehaviorWhenTopicEndpointEnabled string = "when-topic-endpoint-enabled"
+	// MsgVpnTopicEndpointRejectMsgToSenderOnDiscardBehaviorWhenDashTopicDashEndpointDashEnabled captures enum value "when-topic-endpoint-enabled"
+	MsgVpnTopicEndpointRejectMsgToSenderOnDiscardBehaviorWhenDashTopicDashEndpointDashEnabled string = "when-topic-endpoint-enabled"
 
 	// MsgVpnTopicEndpointRejectMsgToSenderOnDiscardBehaviorNever captures enum value "never"
 	MsgVpnTopicEndpointRejectMsgToSenderOnDiscardBehaviorNever string = "never"
@@ -323,14 +325,13 @@ const (
 
 // prop value enum
 func (m *MsgVpnTopicEndpoint) validateRejectMsgToSenderOnDiscardBehaviorEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, msgVpnTopicEndpointTypeRejectMsgToSenderOnDiscardBehaviorPropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, msgVpnTopicEndpointTypeRejectMsgToSenderOnDiscardBehaviorPropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *MsgVpnTopicEndpoint) validateRejectMsgToSenderOnDiscardBehavior(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.RejectMsgToSenderOnDiscardBehavior) { // not required
 		return nil
 	}
@@ -338,6 +339,70 @@ func (m *MsgVpnTopicEndpoint) validateRejectMsgToSenderOnDiscardBehavior(formats
 	// value enum
 	if err := m.validateRejectMsgToSenderOnDiscardBehaviorEnum("rejectMsgToSenderOnDiscardBehavior", "body", m.RejectMsgToSenderOnDiscardBehavior); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validate this msg vpn topic endpoint based on the context it is used
+func (m *MsgVpnTopicEndpoint) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidateEventBindCountThreshold(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateEventRejectLowPriorityMsgLimitThreshold(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.contextValidateEventSpoolUsageThreshold(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *MsgVpnTopicEndpoint) contextValidateEventBindCountThreshold(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.EventBindCountThreshold != nil {
+		if err := m.EventBindCountThreshold.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("eventBindCountThreshold")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *MsgVpnTopicEndpoint) contextValidateEventRejectLowPriorityMsgLimitThreshold(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.EventRejectLowPriorityMsgLimitThreshold != nil {
+		if err := m.EventRejectLowPriorityMsgLimitThreshold.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("eventRejectLowPriorityMsgLimitThreshold")
+			}
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (m *MsgVpnTopicEndpoint) contextValidateEventSpoolUsageThreshold(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.EventSpoolUsageThreshold != nil {
+		if err := m.EventSpoolUsageThreshold.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("eventSpoolUsageThreshold")
+			}
+			return err
+		}
 	}
 
 	return nil

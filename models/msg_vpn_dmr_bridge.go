@@ -6,19 +6,21 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // MsgVpnDmrBridge msg vpn dmr bridge
+//
 // swagger:model MsgVpnDmrBridge
 type MsgVpnDmrBridge struct {
 
 	// The name of the Message VPN.
 	MsgVpnName string `json:"msgVpnName,omitempty"`
 
-	// The remote Message VPN of the DMR Bridge. The default is to have no `remoteMsgVpnName`.
+	// The remote Message VPN of the DMR Bridge. The default value is `""`.
 	RemoteMsgVpnName string `json:"remoteMsgVpnName,omitempty"`
 
 	// The name of the node at the remote end of the DMR Bridge.
@@ -27,6 +29,11 @@ type MsgVpnDmrBridge struct {
 
 // Validate validates this msg vpn dmr bridge
 func (m *MsgVpnDmrBridge) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this msg vpn dmr bridge based on context it is used
+func (m *MsgVpnDmrBridge) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

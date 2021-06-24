@@ -6,30 +6,37 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // MsgVpnRestDeliveryPointRestConsumerTLSTrustedCommonName msg vpn rest delivery point rest consumer Tls trusted common name
+//
 // swagger:model MsgVpnRestDeliveryPointRestConsumerTlsTrustedCommonName
 type MsgVpnRestDeliveryPointRestConsumerTLSTrustedCommonName struct {
 
-	// The name of the Message VPN.
+	// The name of the Message VPN. Deprecated since (will be deprecated in next SEMP version). Common Name validation has been replaced by Server Certificate Name validation.
 	MsgVpnName string `json:"msgVpnName,omitempty"`
 
-	// The name of the REST Consumer.
+	// The name of the REST Consumer. Deprecated since (will be deprecated in next SEMP version). Common Name validation has been replaced by Server Certificate Name validation.
 	RestConsumerName string `json:"restConsumerName,omitempty"`
 
-	// The name of the REST Delivery Point.
+	// The name of the REST Delivery Point. Deprecated since (will be deprecated in next SEMP version). Common Name validation has been replaced by Server Certificate Name validation.
 	RestDeliveryPointName string `json:"restDeliveryPointName,omitempty"`
 
-	// The expected trusted common name of the remote certificate.
+	// The expected trusted common name of the remote certificate. Deprecated since (will be deprecated in next SEMP version). Common Name validation has been replaced by Server Certificate Name validation.
 	TLSTrustedCommonName string `json:"tlsTrustedCommonName,omitempty"`
 }
 
 // Validate validates this msg vpn rest delivery point rest consumer Tls trusted common name
 func (m *MsgVpnRestDeliveryPointRestConsumerTLSTrustedCommonName) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this msg vpn rest delivery point rest consumer Tls trusted common name based on context it is used
+func (m *MsgVpnRestDeliveryPointRestConsumerTLSTrustedCommonName) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

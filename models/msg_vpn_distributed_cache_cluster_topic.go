@@ -6,12 +6,14 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // MsgVpnDistributedCacheClusterTopic msg vpn distributed cache cluster topic
+//
 // swagger:model MsgVpnDistributedCacheClusterTopic
 type MsgVpnDistributedCacheClusterTopic struct {
 
@@ -30,6 +32,11 @@ type MsgVpnDistributedCacheClusterTopic struct {
 
 // Validate validates this msg vpn distributed cache cluster topic
 func (m *MsgVpnDistributedCacheClusterTopic) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this msg vpn distributed cache cluster topic based on context it is used
+func (m *MsgVpnDistributedCacheClusterTopic) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

@@ -6,16 +6,17 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"encoding/json"
 
-	strfmt "github.com/go-openapi/strfmt"
-
 	"github.com/go-openapi/errors"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
 // MsgVpnJndiConnectionFactory msg vpn jndi connection factory
+//
 // swagger:model MsgVpnJndiConnectionFactory
 type MsgVpnJndiConnectionFactory struct {
 
@@ -52,10 +53,16 @@ type MsgVpnJndiConnectionFactory struct {
 	// The timeout for sending the acknowledgement (ACK) for guaranteed messages received by the Subscriber (Consumer), in milliseconds. The default value is `1000`.
 	GuaranteedReceiveAckTimeout int32 `json:"guaranteedReceiveAckTimeout,omitempty"`
 
+	// The maximum number of attempts to reconnect to the host or list of hosts after the guaranteed  messaging connection has been lost. The value "-1" means to retry forever. The default value is `-1`. Available since 2.14.
+	GuaranteedReceiveReconnectRetryCount int32 `json:"guaranteedReceiveReconnectRetryCount,omitempty"`
+
+	// The amount of time to wait before making another attempt to connect or reconnect to the host after the guaranteed messaging connection has been lost, in milliseconds. The default value is `3000`. Available since 2.14.
+	GuaranteedReceiveReconnectRetryWait int32 `json:"guaranteedReceiveReconnectRetryWait,omitempty"`
+
 	// The size of the window for guaranteed messages received by the Subscriber (Consumer), in messages. The default value is `18`.
 	GuaranteedReceiveWindowSize int32 `json:"guaranteedReceiveWindowSize,omitempty"`
 
-	// The threshold for sending the acknowledgement (ACK) for guaranteed messages received by the Subscriber (Consumer) as a percentage of the "guaranteedReceiveWindowSize" value. The default value is `60`.
+	// The threshold for sending the acknowledgement (ACK) for guaranteed messages received by the Subscriber (Consumer) as a percentage of `guaranteedReceiveWindowSize`. The default value is `60`.
 	GuaranteedReceiveWindowSizeAckThreshold int32 `json:"guaranteedReceiveWindowSizeAckThreshold,omitempty"`
 
 	// The timeout for receiving the acknowledgement (ACK) for guaranteed messages sent by the Publisher (Producer), in milliseconds. The default value is `2000`.
@@ -175,20 +182,19 @@ const (
 	// MsgVpnJndiConnectionFactoryMessagingDefaultDeliveryModePersistent captures enum value "persistent"
 	MsgVpnJndiConnectionFactoryMessagingDefaultDeliveryModePersistent string = "persistent"
 
-	// MsgVpnJndiConnectionFactoryMessagingDefaultDeliveryModeNonPersistent captures enum value "non-persistent"
-	MsgVpnJndiConnectionFactoryMessagingDefaultDeliveryModeNonPersistent string = "non-persistent"
+	// MsgVpnJndiConnectionFactoryMessagingDefaultDeliveryModeNonDashPersistent captures enum value "non-persistent"
+	MsgVpnJndiConnectionFactoryMessagingDefaultDeliveryModeNonDashPersistent string = "non-persistent"
 )
 
 // prop value enum
 func (m *MsgVpnJndiConnectionFactory) validateMessagingDefaultDeliveryModeEnum(path, location string, value string) error {
-	if err := validate.Enum(path, location, value, msgVpnJndiConnectionFactoryTypeMessagingDefaultDeliveryModePropEnum); err != nil {
+	if err := validate.EnumCase(path, location, value, msgVpnJndiConnectionFactoryTypeMessagingDefaultDeliveryModePropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (m *MsgVpnJndiConnectionFactory) validateMessagingDefaultDeliveryMode(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.MessagingDefaultDeliveryMode) { // not required
 		return nil
 	}
@@ -198,6 +204,11 @@ func (m *MsgVpnJndiConnectionFactory) validateMessagingDefaultDeliveryMode(forma
 		return err
 	}
 
+	return nil
+}
+
+// ContextValidate validates this msg vpn jndi connection factory based on context it is used
+func (m *MsgVpnJndiConnectionFactory) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

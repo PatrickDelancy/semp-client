@@ -6,12 +6,14 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // DmrClusterLinkRemoteAddressLinks dmr cluster link remote address links
+//
 // swagger:model DmrClusterLinkRemoteAddressLinks
 type DmrClusterLinkRemoteAddressLinks struct {
 
@@ -21,6 +23,11 @@ type DmrClusterLinkRemoteAddressLinks struct {
 
 // Validate validates this dmr cluster link remote address links
 func (m *DmrClusterLinkRemoteAddressLinks) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this dmr cluster link remote address links based on context it is used
+func (m *DmrClusterLinkRemoteAddressLinks) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

@@ -6,23 +6,34 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // MsgVpnACLProfileLinks msg vpn Acl profile links
+//
 // swagger:model MsgVpnAclProfileLinks
 type MsgVpnACLProfileLinks struct {
 
 	// The URI of this ACL Profile's collection of Client Connect Exception objects.
 	ClientConnectExceptionsURI string `json:"clientConnectExceptionsUri,omitempty"`
 
-	// The URI of this ACL Profile's collection of Publish Topic Exception objects.
+	// The URI of this ACL Profile's collection of Publish Topic Exception objects. Deprecated since 2.14. Replaced by publishTopicExceptions.
 	PublishExceptionsURI string `json:"publishExceptionsUri,omitempty"`
 
-	// The URI of this ACL Profile's collection of Subscribe Topic Exception objects.
+	// The URI of this ACL Profile's collection of Publish Topic Exception objects. Available since 2.14.
+	PublishTopicExceptionsURI string `json:"publishTopicExceptionsUri,omitempty"`
+
+	// The URI of this ACL Profile's collection of Subscribe Topic Exception objects. Deprecated since 2.14. Replaced by subscribeTopicExceptions.
 	SubscribeExceptionsURI string `json:"subscribeExceptionsUri,omitempty"`
+
+	// The URI of this ACL Profile's collection of Subscribe Share Name Exception objects. Available since 2.14.
+	SubscribeShareNameExceptionsURI string `json:"subscribeShareNameExceptionsUri,omitempty"`
+
+	// The URI of this ACL Profile's collection of Subscribe Topic Exception objects. Available since 2.14.
+	SubscribeTopicExceptionsURI string `json:"subscribeTopicExceptionsUri,omitempty"`
 
 	// The URI of this ACL Profile object.
 	URI string `json:"uri,omitempty"`
@@ -30,6 +41,11 @@ type MsgVpnACLProfileLinks struct {
 
 // Validate validates this msg vpn Acl profile links
 func (m *MsgVpnACLProfileLinks) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this msg vpn Acl profile links based on context it is used
+func (m *MsgVpnACLProfileLinks) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

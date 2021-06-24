@@ -6,12 +6,14 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	strfmt "github.com/go-openapi/strfmt"
+	"context"
 
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // MsgVpnDistributedCacheLinks msg vpn distributed cache links
+//
 // swagger:model MsgVpnDistributedCacheLinks
 type MsgVpnDistributedCacheLinks struct {
 
@@ -24,6 +26,11 @@ type MsgVpnDistributedCacheLinks struct {
 
 // Validate validates this msg vpn distributed cache links
 func (m *MsgVpnDistributedCacheLinks) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this msg vpn distributed cache links based on context it is used
+func (m *MsgVpnDistributedCacheLinks) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 
